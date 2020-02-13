@@ -42,8 +42,10 @@ object NNTest {
       randSamp_02 += mi3
     }
     val randSamp_03 = sc.parallelize(randSamp_02, 10)
-    sc.setCheckpointDir("hdfs://master:9000/ml/data/checkpoint")
-    randSamp_03.checkpoint()
+
+    //sc.setCheckpointDir("hdfs://master:9000/ml/data/checkpoint")
+    //randSamp_03.checkpoint()
+
     val trainRDD = randSamp_03.map(f => (new BDM(1, 1, f(::, 0).data), f(::, 1 to -1)))
     // 训练，建立模型
     val opts = Array(100.0, 50.0, 0.0)
@@ -51,9 +53,9 @@ object NNTest {
     val numExamples = trainRDD.count()
     println(s"Number of Examples: $numExamples")
     val NNModel = new NeuralNet().
-      setSize(Array(5, 10, 10, 10, 10, 10, 1)).
-      setLayer(7).
-      setActivation_function("tanh_opt").
+      setSize(Array(5, 10, 10, 10, 10, 10, 1)). // Size：Array[Int]，神经网络每一层的节点数量；
+      setLayer(7). // Layer：神经网络的层数；
+      setActivation_function("tanh_opt"). // Activation_function：激活函数，可以是sigm或tanh
       setLearningRate(2.0).
       setScaling_learningRate(1.0).
       setWeightPenaltyL2(0.0).
@@ -61,7 +63,7 @@ object NNTest {
       setSparsityTarget(0.05).
       setInputZeroMaskedFraction(0.0).
       setDropoutFraction(0.0).
-      setOutput_function("sigm").
+      setOutput_function("sigm"). // Ouput_function：输出函数，可以是sigm、softmax或linear。
       NNtrain(trainRDD, opts)
 
     // 测试模型
@@ -85,6 +87,8 @@ object NNTest {
         println()
       }
     }
+
+    sc.stop()
 
   }
 
