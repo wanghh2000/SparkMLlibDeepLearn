@@ -27,6 +27,9 @@ object RandSampleData extends Serializable {
   //∑(x(i) 2)
   /**
    * 测试函数: Rosenbrock, Rastrigin
+   * 单峰函数-Sphere Model, sphere 球曲面函数详解
+   * 病态函数Generalized Rosenbrock, 函数是一个用来测试最优化算法性能的非凸函数
+   * 多峰函数Generalized Rastrigin, 用于非线性算法的测试用到的函数
    * 随机生成n2维数据，并根据测试函数计算Y
    * n1 行，n2 列，b1 上限，b2 下限，function 计算函数
    */
